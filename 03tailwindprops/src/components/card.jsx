@@ -1,6 +1,6 @@
 import { React } from "react";
 
-function Card({username, btntext="Visit here"}){
+function Card({username, btntext="Visit here"}){ //here you can set the default value for titleText so if someone else forget to add the titleText in the code 
     
     
     return(
