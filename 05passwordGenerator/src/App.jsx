@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import './index.css'
 
 function App() {
@@ -6,6 +6,10 @@ function App() {
   const [numAllowed, setNumAllowed] = useState(false);
   const [charAllowed, setCharAllowed] = useState(false);
   const [password, setPassword] = useState("");
+
+  // "useRef hook"- jab kisi cheej ka reference lena hotahaitab iska use karte hai. aur ye variable me store hota h
+
+  const passwordRef = useRef(null)
 
   const passwordGenerator = useCallback(
     () => {
@@ -23,10 +27,21 @@ function App() {
 
     [length, numAllowed, charAllowed, setPassword])
 
+  const copyPasswordToClipboard = useCallback(() => {
+    passwordRef.current?.select()
+    passwordRef.current?.setSelectionRange(0,50)
+    window.navigator.clipboard.writeText(password);
+    // alert("Password copied! 🔑");
+  }, [password])
+
+  useEffect(() => {
+    passwordGenerator()
+  }, [length, numAllowed, charAllowed, passwordGenerator])
+
 
   return (
     <>
-      <div className='w-full max-w-md mx-auto shadow-md rounded-lg px-4 py-3 my-8 text-orange-500 bg-gray-700'
+      <div className='w-full max-w-md mx-auto shadow-md rounded-lg px-4 py-3 my-8 text-sky-400 bg-gray-700'
       >
         <h1 className='text-white text-center my-1'>Password generator</h1>
 
@@ -36,15 +51,30 @@ function App() {
             value={password}
             className='outline-none w-full py-1 px-3'
             placeholder='Password' readOnly
+            ref={passwordRef}
           />
-          <button className='outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0'>Copy</button>
+
+          <div className='flex'>
+            <button
+              onClick={copyPasswordToClipboard}
+              className='outline-none rounded-tl-lg rounded-bl-lg cursor-pointer bg-blue-700 text-white px-3 py-0.5 shrink-0 active:scale-90 activate:bg-blue-800 transition-transform duration-100 '>
+              Copy</button>
+
+            <button
+              onClick={passwordGenerator}
+              className='outline-none  bg-green-600 text-white px-3 py-0.5 shrink-0 rounded-tl-none rounded-bl-none cursor-pointer active:scale-95 active:bg-green-700 transition-transform duration-100 rounded-l-md'
+              title="Refresh Password"
+            >
+              Refresh
+            </button>
+          </div>
         </div>
 
         <div className=' flex text-sm gap-x-2'>
           <div className='flex items-center gap-x-1'>
             <input type="range"
               min={6}
-              max={15}
+              max={75}
               value={length}
               className='cursor-pointer'
               onChange={(e) => { setLength(e.target.value) }}
@@ -63,18 +93,18 @@ function App() {
             <label htmlFor='numberInput'>Numbers</label>
           </div>
 
-        
-        <div className="flex items-center gap-x-1">
-          <input
-            type="checkbox"
-            defaultChecked={charAllowed}
-            id="characterInput"
-            onChange={() => {
-              setCharAllowed((prev) => !prev)
-            }}
-          />
-          <label htmlFor="characterInput">Characters</label>
-        </div>
+
+          <div className="flex items-center gap-x-1">
+            <input
+              type="checkbox"
+              defaultChecked={charAllowed}
+              id="characterInput"
+              onChange={() => {
+                setCharAllowed((prev) => !prev)
+              }}
+            />
+            <label htmlFor="characterInput">Characters</label>
+          </div>
         </div>
       </div>
 
