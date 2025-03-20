@@ -32,7 +32,7 @@ export default function Home() {
                 </div>
 
                 <div className="absolute inset-0 w-full sm:my-20 sm:pt-1 pt-12 h-full ">
-                    <img className="w-96" src="https://i.ibb.co/5BCcDYB/Remote2.png" alt="image1" />
+                    <img   className="w-96 transform scale-x-[-1]" src="https://png.pngtree.com/png-clipart/20230916/original/pngtree-sticker-with-a-person-sitting-in-a-chair-on-a-beach-png-image_12251891.png" alt="image1" />
                 </div>
             </aside>
 
